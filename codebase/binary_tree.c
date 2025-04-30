@@ -42,16 +42,14 @@ t_node *build_tree(char *string, int *index){
     if (string[*index] != '(') return NULL;
     (*index)++;
 
-    if (string[*index] == ')') { // Nó nulo
+    if (string[*index] == ')') {
         (*index)++;
         return NULL;
     }
 
-    // Cria o nó
     t_node *node = create_node(string[*index]);
     (*index)++;
 
-    // Espera vírgula e filho esquerdo
     if (string[*index] != ',') {
         free(node);
         return NULL;
@@ -59,7 +57,6 @@ t_node *build_tree(char *string, int *index){
     (*index)++;
     node->left = build_tree(string, index);
 
-    // Espera vírgula e filho direito
     if (string[*index] != ',') {
         destroy_nodes(node->left);
         free(node);
@@ -68,7 +65,6 @@ t_node *build_tree(char *string, int *index){
     (*index)++;
     node->right = build_tree(string, index);
 
-    // Espera fechar parêntese
     if (string[*index] != ')') {
         destroy_nodes(node->left);
         destroy_nodes(node->right);
@@ -89,7 +85,6 @@ t_binary_tree *create(char *string){
     int index = 0;
     tree->root = build_tree(string, &index);
 
-    // Se não consumiu toda a string ou root é NULL, é inválido
     if (string[index] != '\0' || tree->root == NULL) {
         exit_tree(tree);
         return NULL;
